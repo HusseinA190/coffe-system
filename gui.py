@@ -23,15 +23,8 @@ def tree(tree3):
   tree3.pack(pady=5)
 #--------------------
 
-
-#----------------The Start Of The delete_item-------------
-def delete_items():
-  pass
-#----------------The end Of The delete_items---------------
-
 #-------------The Start Of The Exit Items------------------
 def Exit():
-  if messagebox.askyesno(title='Logout',message='Are You Sure To Abort ?'):
     window.destroy()
 #-------------The End Of The Exit Button--------------------
 
@@ -191,7 +184,7 @@ num=1
 def show_drinks(kind):
   global num
   c=connect_data.filter2(kind)
-  if kind=='Hot Drinks':
+  if kind =='Hot Drinks':
     num=1
     for i in menu.get_children():
       menu.delete(i)

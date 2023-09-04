@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+# serials 
 user_name='admin';user_pass='123456'
 casher_name='casher';casher_pass='2468'
 
@@ -30,12 +31,13 @@ def check_login():
   elif password_field.get()=='':
     messagebox.showwarning(title='Access Type Error',message="Please Enter Password")
   elif x.get()=='':
-    messagebox.showwarning(title='Access Type Error',message="You Should Mark 'user' or 'Employee' ")
+    messagebox.showwarning(title='Access Type Error',message="You Should Mark 'Admin' or 'Employee' ")
   elif x.get():
     if user_field.get()!='' and password_field.get()!='':
       if user_field.get()==casher_name and password_field.get()==casher_pass and x.get()=='Employee':
           window2.destroy()
-          from gui import window
+          import gui
+          
       elif user_field.get()==casher_name and password_field.get()==casher_pass and x.get()!='Employee':
         messagebox.showerror(title='error Validation',message="Something Is Wrong")
       elif user_field.get()!=casher_name and password_field.get()==casher_pass and x.get()=='Employee':
@@ -45,17 +47,18 @@ def check_login():
       elif user_field.get()!=casher_name and password_field.get()!=casher_pass and x.get()=='Employee':
         messagebox.showerror(title='error Validation',message="Something Is Wrong")
       if user_field.get()==user_name and password_field.get()==user_pass and x.get()=='Admin':
-        window2.destroy()
-        from backend import GUI_DB 
+          window2.destroy()
+          import backend
+          
       
-        if user_field.get()==user_name and password_field.get()==user_pass and x.get()!='Admin':
-          messagebox.showerror(title='error Validation',message="Something Is Wrong") 
-        elif user_field.get()==user_name and password_field.get()!=user_pass and x.get()=='Admin':
-          messagebox.showerror(title='error Validation',message="Something Is Wrong") 
-        elif user_field.get()!=user_name and password_field.get()==user_pass and x.get()=='Admin':
-          messagebox.showerror(title='error Validation',message="Something Is Wrong") 
-        elif user_field.get()!=user_name and password_field.get()!=user_pass and x.get()=='Admin':
-          messagebox.showerror(title='error Validation',message="Something Is Wrong") 
+      if user_field.get()==user_name and password_field.get()==user_pass and x.get()!='Admin':
+        messagebox.showerror(title='error Validation',message="Something Is Wrong") 
+      elif user_field.get()==user_name and password_field.get()!=user_pass and x.get()=='Admin':
+        messagebox.showerror(title='error Validation',message="Something Is Wrong") 
+      elif user_field.get()!=user_name and password_field.get()==user_pass and x.get()=='Admin':
+        messagebox.showerror(title='error Validation',message="Something Is Wrong") 
+      elif user_field.get()!=user_name and password_field.get()!=user_pass and x.get()=='Admin':
+        messagebox.showerror(title='error Validation',message="Something Is Wrong") 
     elif user_field.get()!=casher_name or user_field.get()!=user_name and password_field.get()!=casher_pass or password_field.get()!=user_pass:
         messagebox.showwarning(title='Access Type Error',message="Username or password is wrong")
 

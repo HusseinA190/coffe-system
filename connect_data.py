@@ -23,9 +23,6 @@ def filter2(kind):
     else:
         return ice
     
-    
-
-    
 def filter1(kind):  
     db=sqlite3.connect('database.db')
     cr=db.cursor()

@@ -104,13 +104,17 @@ price_entry.grid(row=1,column=1,padx=20, pady=10)
 # --------------------------------------------------------------------------------
 options=['Hot_Drinks','Ice_Drinks','Ice_Cream'] # List Of Options
 # Create Of The Combo_options
-clicked=StringVar()   # return value from option_combo
-category_menu=ttk.Combobox(getdata_frame,value=options,textvariable=clicked,width=22,height=50)
+   # return value from option_combo
+def on_item_select(event):
+       global item_select
+       item_select = category_menu.get()
+
+category_menu=ttk.Combobox(getdata_frame,value=options,width=22,height=50)
 category_menu.current(0)
-category_menu.bind("<<ComboboxSelected>>",clicked)
+category_menu.bind("<<ComboboxSelected>>",on_item_select)
 category_menu.config(font=("Consolas",13,'bold'),state='readonly')
 category_menu.grid(row=2,column=1,padx=20, pady=10)
-
+item_select = category_menu.get()
 
 # 2-create top right frame (treeview)
 showdata_frame=Frame(top_frame)
@@ -157,32 +161,27 @@ def filter(category,t1):
                 t1.insert('',END, values=item)
 filter('All',show_tree)                             
 # -------------------
-def clear_data(n,p,c):
+def clear_data(n,p):
         n.delete(0,END)
         p.delete(0,END)
-        c.delete(0,END)
 # ---------------->add_button
 def add_button():
-        try:    
-                name=name_entry.get()
-                price=price_entry.get()
-                category=clicked.get()
-                if name.isnumeric() or price ==''or name=='':
-                        messagebox.showerror(title='Type Error',message='Enter correct Data')
+        name=name_entry.get()
+        price=price_entry.get()
+        category=item_select
+
+        if name =='' or price == '' or category =='':
+                messagebox.showerror(title='Type Error',message='Enter correct Data')
+                return
+        elif len(name)>0 and price!='' and category!='' :               
+                price=float(price)
+                if db.check_name_exist(name,price):
+                        messagebox.showerror(title='Type Error',message='This data already exist')
+                        clear_data(name_entry,price_entry)
                         return
-                if len(name)>0 and price and category :
-                        name=str(name)                
-                        price=float(price)
-                        if db.check_name_exist(name):
-                                messagebox.showerror(title='Type Error',message='This data already exist')
-                                return
+                
                 db.add_item(name,price,category)
                 filter('All',show_tree)         
-                
-                        
-        except:
-                messagebox.showerror(title='Type Error',message='Invalid Input')
-        finally:
                 clear_data(name_entry,price_entry)
         # meun_treeview Excution
 
@@ -216,7 +215,8 @@ def delete_button():
     
     Delete_item(v[0])
     show_tree.delete(*show_tree.selection())
-    messagebox.showwarning(title='show deleted',message='Record Has Been Deleted')    
+    messagebox.showwarning(title='show deleted',message='Record Has Been Deleted') 
+       
 deletebutton=Button(
         buttons_frame,
         text='Delete',
@@ -237,7 +237,7 @@ def update():
         try:    
                 name=name_entry.get()
                 price=price_entry.get()
-                category=clicked.get()
+                category=item_select
                 if len(name)>0 and price and category :
                         name=str(name)                
                         price=float(price)
@@ -275,19 +275,32 @@ updatebutton.pack(side=RIGHT,expand=True,fill=BOTH)
 #----------------Menu Button----------------------
 goto_screen_cashierbutton=Button(
         buttons_frame,
-        text='Menu',
-        command=openmnue,
+        text='Menu/Login',
+        #command=openmnue,
         font=("Segoe Print",15,'bold'),
         image=c2,
         compound='left',
         bd=2,
-        padx=18,
+        padx=81.5,
         pady=10,
         relief=FLAT,
         bg='black',
         fg='white',
         )
-goto_screen_cashierbutton.pack(side=RIGHT,expand=True,fill=BOTH)
+goto_screen_cashierbutton.pack(side=RIGHT,fill=BOTH)
+
+def Go_Back(event):
+    GUI_DB.destroy()
+    import Login
+def Go_Menu(event):
+    GUI_DB.destroy()
+    import gui
+
+goto_screen_cashierbutton.bind('<Button-1>',Go_Back)
+goto_screen_cashierbutton.bind('<Button-3>',Go_Menu)
+#---------------------------------------------------------------
+
+
 #--------------End Of Menu Button------------------
 
 GUI_DB.mainloop()
